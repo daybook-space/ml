@@ -15,7 +15,7 @@ if __name__ == '__main__':
     ds, ed = analyze_journal(journal_content)
 
     print("======= Document Sentiment =======")
-    print(f"Overall: {sm_fun(ds[0], ds[1])}")
+    print(f"Overall: {ds}")
 
     print("======== Entity Sentiment =======")
 

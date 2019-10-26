@@ -41,6 +41,7 @@ def collapse_items(items):
         if done[i]:
             continue
         done[i] = True
+        cnt = 1
         name = set(item[0].split(" "))
         sum_1 = item[1]
         sum_2 = item[2]
@@ -54,8 +55,9 @@ def collapse_items(items):
                 done[j] = True
                 sum_1 += i2[1]
                 sum_2 += i2[2]
+                cnt += 1
 
-        new_items.append((item[0], sum_1, sum_2))
+        new_items.append((item[0], sum_1 / cnt, sum_2))
 
     return new_items
 
@@ -115,7 +117,6 @@ def process_entities(annotations, syntax):
 
 # Analyzes journal for entity sentiment and overall sentiment
 # Returns tuple of (doc_sentiment, entity_dict)
-# doc_sentiment == (score, magnitude)
 # entity_dict == {'events': ___, 'people': ___, 'locations': ___, 'other': ___}
 def analyze_journal(journal_content):
     client = language.LanguageServiceClient()
@@ -133,7 +134,7 @@ def analyze_journal(journal_content):
     events, people, locations, other = process_entities(annotations, syntax)
 
     sent = sentiment.document_sentiment
-    doc_sentiment = (sent.score, sent.magnitude)
+    doc_sentiment = sm_fun(sent.score, sent.magnitude)
 
     entity_dict = {
         'events': events,
