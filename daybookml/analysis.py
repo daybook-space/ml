@@ -6,8 +6,7 @@ from google.cloud.language import types
 
 from scipy.special import expit
 
-# List of words to exclude
-generic_words = "generic_words.txt"
+from .generic_words import DISALLOWED_WORDS
 
 ##########################
 ##    IMPLEMENTATION    ##
@@ -24,10 +23,6 @@ ALLOWABLE_LABELS = [enums.DependencyEdge.Label.DOBJ,
                     #enums.DependencyEdge.Label.NSUBJPASS,
                     enums.DependencyEdge.Label.IOBJ,
                     enums.DependencyEdge.Label.POBJ]
-
-# Load excluded words
-with open(generic_words) as f:
-    DISALLOWED_WORDS = set(f.read().split())
 
 # Calculates single metric from sentiment from score and magnitude
 # Uses sigmoid function to push scores to either 1 or -1
@@ -148,37 +143,3 @@ def analyze_journal(journal_content):
     }
 
     return (doc_sentiment, entity_dict)
-
-if __name__ == '__main__':
-    ap = argparse.ArgumentParser()
-
-    ap.add_argument('journal_file', help="path to journal text file")
-    args = vars(ap.parse_args())
-
-    with open(args['journal_file']) as f:
-        journal_content = f.read()
-
-    print("[INFO] Analyzing file...")
-    ds, ed = analyze_journal(journal_content)
-
-    print("======= Document Sentiment =======")
-    print(f"Overall: {sm_fun(ds[0], ds[1])}")
-
-    print("======== Entity Sentiment =======")
-
-    print("Events:")
-    for i in ed['events']:
-        print(f'{i[0]}: {sm_fun(i[1], i[2])}')
-
-    print("\nPeople:")
-    for i in ed['people']:
-        print(f'{i[0]}: {sm_fun(i[1], i[2])}')
-
-    print("\nLocations:")
-    for i in ed['locations']:
-        print(f'{i[0]}: {sm_fun(i[1], i[2])}')
-
-    print("\nOther:")
-    for i in ed['other']:
-        print(f'{i[0]}: {sm_fun(i[1], i[2])}')
-
