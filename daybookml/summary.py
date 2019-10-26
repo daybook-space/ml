@@ -35,5 +35,19 @@ def top_emotion_effectors(journal_sentiments):
     }
 
 def is_suicidal(journal_sentiments):
-    # Assumption is true most of the time
+    other = []
+
+    for journal in journal_sentiments:
+        other.extend(journal['other'])
+
+    other = collapse_items(other)
+
+    for word in other:
+        if word[0] == 'life':
+            sm_score = sm_fun(word[1], word[2])
+            if sm_score < -2:
+                return True
+            else:
+                return False
+
     return False
