@@ -45,9 +45,6 @@ def is_suicidal(journal_sentiments):
     for word in other:
         if word[0] == 'life':
             sm_score = sm_fun(word[1], word[2])
-            if sm_score < -2:
-                return True
-            else:
-                return False
+            return sm_score < -2
 
     return False
