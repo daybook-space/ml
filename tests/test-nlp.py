@@ -33,9 +33,11 @@ def analyze(journal_filename):
         content=content,
         type=enums.Document.Type.PLAIN_TEXT)
     annotations = client.analyze_entity_sentiment(document=document)
+    syntax = client.analyze_syntax(document=document)
 
     # Print the results
     print(annotations)
+    print(syntax)
     #print_result(annotations)
 
 
