@@ -1,16 +1,10 @@
 from .analysis import sm_fun, collapse_items
 
 def top_emotion_effectors(journal_sentiments):
-    events = []
-    people = []
-    locations = []
-    other = []
-
-    for journal in journal_sentiments:
-        events.extend(journal['events'])
-        people.extend(journal['people'])
-        locations.extend(journal['locations'])
-        other.extend(journal['other'])
+    events = journal_sentiments['events']
+    people = journal_sentiments['people']
+    locations = journal_sentiments['locations']
+    other = journal_sentiments['other']
 
     events = collapse_items(events)
     people = collapse_items(people)
